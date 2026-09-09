@@ -132,9 +132,12 @@ function Index() {
           </section>
         </div>
 
-        <section id="projects" className="mt-16 flex flex-col items-start justify-between gap-7 border-t border-foreground/30 pt-8 sm:flex-row sm:items-end">
-          <div><p className="font-mono text-[10px] uppercase text-muted-foreground">Next project</p><h2 className="mt-3 text-4xl font-black uppercase sm:text-6xl">Create something<br />worth watching.</h2></div>
-          <Button variant="studio" size="lg"><Plus /> Create new project</Button>
+        <section id="projects" className="relative mt-16 border-t border-foreground/30 pt-8">
+          <div className="absolute left-0 top-0 h-1 w-32 bg-gradient-to-r from-primary to-accent sm:w-56" />
+          <div className="flex flex-col items-start justify-between gap-7 sm:flex-row sm:items-end">
+            <div><p className="font-mono text-[10px] uppercase text-muted-foreground">Next project</p><h2 className="mt-3 text-4xl font-black uppercase sm:text-6xl">Create something<br />worth watching.</h2></div>
+            <Button variant="studio" size="lg"><Plus /> Create new project</Button>
+          </div>
         </section>
       </section>
     </main>
