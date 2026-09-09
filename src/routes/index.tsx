@@ -97,9 +97,11 @@ function Index() {
         <div className="mt-12 border-y border-border py-6">
           <div className="relative h-px bg-border">
             <div className="absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-primary to-accent" />
-            {[8, 28, 47, 69, 90].map((position, index) => (
-              <span key={position} className={`absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full ${index === 2 ? "bg-accent" : "bg-foreground"}`} style={{ left: `${position}%` }} />
-            ))}
+            <span className="absolute left-[8%] top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground" />
+            <span className="absolute left-[28%] top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground" />
+            <span className="absolute left-[47%] top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" />
+            <span className="absolute left-[69%] top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground" />
+            <span className="absolute left-[90%] top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground" />
           </div>
           <div className="mt-4 grid grid-cols-5 font-mono text-[8px] uppercase text-muted-foreground sm:text-[10px]">
             {markers.map((marker, index) => <span key={marker} className={index === 2 ? "text-accent" : ""}>{marker}</span>)}
@@ -111,7 +113,7 @@ function Index() {
             <p className="font-mono text-[10px] uppercase text-muted-foreground">Directing modes</p>
             <div className="mt-5 flex flex-wrap gap-x-6 gap-y-4">
               {modes.map((mode, index) => (
-                <button key={mode} className={`font-mono text-[11px] uppercase transition-colors ${index === 0 ? "border-b border-primary pb-1 text-foreground" : "text-muted-foreground hover:text-foreground"}`}>{mode}</button>
+                <Button key={mode} variant="ghost" size="sm" className={`h-auto rounded-none px-0 py-1 font-mono text-[11px] uppercase shadow-none ${index === 0 ? "border-b border-primary text-foreground" : "text-muted-foreground hover:bg-transparent hover:text-foreground"}`}>{mode}</Button>
               ))}
             </div>
           </section>
