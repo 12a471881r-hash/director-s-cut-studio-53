@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Aperture, Menu, Play, Plus, Sparkles } from "lucide-react";
+import type { CSSProperties } from "react";
 
 import directorFrame from "@/assets/director-frame.jpg";
 import { Button } from "@/components/ui/button";
