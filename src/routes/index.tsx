@@ -54,10 +54,10 @@ function Index() {
         <div className="grid items-end gap-8 lg:grid-cols-[0.72fr_1.75fr_0.7fr]">
           <div className="relative z-10 lg:pb-10">
             <p className="director-reveal font-mono text-[10px] uppercase text-primary">Live analysis / source 01</p>
-            <h1 className="director-reveal mt-5 text-6xl font-black uppercase leading-[0.82] sm:text-8xl lg:text-[7.5rem]" style={{ "--reveal-delay": "90ms" } as React.CSSProperties}>
+            <h1 className="director-reveal mt-5 text-6xl font-black uppercase leading-[0.82] sm:text-8xl lg:text-[7.5rem]" style={{ "--reveal-delay": "90ms" } as CSSProperties}>
               Find<br /><span className="font-display text-[0.78em] font-normal normal-case italic tracking-tight">the</span><br /><span className="gradient-word">moment.</span>
             </h1>
-            <div className="director-reveal mt-9 flex items-center gap-3" style={{ "--reveal-delay": "200ms" } as React.CSSProperties}>
+            <div className="director-reveal mt-9 flex items-center gap-3" style={{ "--reveal-delay": "200ms" } as CSSProperties}>
               <span className="h-px w-14 bg-gradient-to-r from-primary to-accent" />
               <span className="font-mono text-[10px] uppercase text-muted-foreground">The director is watching</span>
             </div>
