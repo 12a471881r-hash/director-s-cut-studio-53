@@ -21,6 +21,7 @@
 @theme inline {
   --font-sans: "Archivo", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
+  --font-display: "Instrument Serif", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -168,9 +169,56 @@
   animation: director-pulse 2.8s ease-in-out infinite;
 }
 
+@keyframes director-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes director-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Staggered entrance; delay set inline via --reveal-delay */
+@utility director-reveal {
+  animation: director-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Slow-moving pink -> orange gradient text */
+@utility gradient-word {
+  background-image: linear-gradient(100deg, var(--primary), var(--accent), var(--primary));
+  background-size: 220% 100%;
+  background-clip: text;
+  color: transparent;
+  animation: director-shift 9s ease-in-out infinite;
+}
+
+/* Gradient underline that grows on hover / when active */
+@utility gradient-tab {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -6px;
+    height: 1px;
+    background-image: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  &:hover::after,
+  &[data-active="true"]::after {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .director-scan,
-  .director-pulse {
+  .director-pulse,
+  .director-reveal,
+  .gradient-word {
     animation: none;
   }
 }
