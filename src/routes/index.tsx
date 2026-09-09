@@ -37,27 +37,27 @@ function Index() {
           <span className="hidden font-mono text-[10px] uppercase text-muted-foreground sm:inline">/ Director</span>
         </div>
         <nav aria-label="Primary navigation" className="hidden items-center gap-7 font-mono text-[10px] uppercase text-muted-foreground lg:flex">
-          <a className="text-foreground" href="#studio">01 Studio</a>
-          <a className="transition-colors hover:text-foreground" href="#projects">02 Projects</a>
-          <a className="transition-colors hover:text-foreground" href="#cuts">03 Cuts</a>
-          <a className="transition-colors hover:text-foreground" href="#modes">04 Modes</a>
+          <a className="gradient-tab text-foreground transition-colors" data-active="true" href="#studio">01 Studio</a>
+          <a className="gradient-tab transition-colors hover:text-foreground" href="#projects">02 Projects</a>
+          <a className="gradient-tab transition-colors hover:text-foreground" href="#cuts">03 Cuts</a>
+          <a className="gradient-tab transition-colors hover:text-foreground" href="#modes">04 Modes</a>
         </nav>
         <div className="flex items-center gap-3 font-mono text-[9px] uppercase text-muted-foreground">
           <span className="director-pulse size-1.5 rounded-full bg-accent" />
           <span className="hidden sm:inline">Director online</span>
-          <Button aria-label="Open menu" size="icon" variant="ghost" className="lg:hidden"><Menu /></Button>
+          <Button aria-label="Open menu" size="icon" variant="ghost" className="rounded-none border border-border text-foreground transition-all hover:border-transparent hover:bg-[linear-gradient(90deg,var(--primary),var(--accent))] hover:text-background lg:hidden"><Menu /></Button>
         </div>
       </header>
 
       <section id="studio" className="mx-auto max-w-[1600px] px-4 pb-12 pt-8 sm:px-7 lg:px-10 lg:pt-12">
         <div className="grid items-end gap-8 lg:grid-cols-[0.72fr_1.75fr_0.7fr]">
           <div className="relative z-10 lg:pb-10">
-            <p className="font-mono text-[10px] uppercase text-primary">Live analysis / source 01</p>
-            <h1 className="mt-5 text-6xl font-black uppercase leading-[0.82] sm:text-8xl lg:text-[7.5rem]">
-              Find<br />the<br /><span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">moment.</span>
+            <p className="director-reveal font-mono text-[10px] uppercase text-primary">Live analysis / source 01</p>
+            <h1 className="director-reveal mt-5 text-6xl font-black uppercase leading-[0.82] sm:text-8xl lg:text-[7.5rem]" style={{ "--reveal-delay": "90ms" } as React.CSSProperties}>
+              Find<br /><span className="font-display text-[0.78em] font-normal normal-case italic tracking-tight">the</span><br /><span className="gradient-word">moment.</span>
             </h1>
-            <div className="mt-9 flex items-center gap-3">
-              <span className="h-px w-14 bg-primary" />
+            <div className="director-reveal mt-9 flex items-center gap-3" style={{ "--reveal-delay": "200ms" } as React.CSSProperties}>
+              <span className="h-px w-14 bg-gradient-to-r from-primary to-accent" />
               <span className="font-mono text-[10px] uppercase text-muted-foreground">The director is watching</span>
             </div>
           </div>
