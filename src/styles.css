@@ -20,7 +20,7 @@
 
 @theme inline {
   --font-sans: "Archivo", sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-mono: "Space Mono", monospace;
   --font-display: "Instrument Serif", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
