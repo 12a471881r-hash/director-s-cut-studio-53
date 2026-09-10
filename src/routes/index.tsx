@@ -71,8 +71,8 @@ function Index() {
                 <div className="absolute inset-x-0 top-0 h-px overflow-hidden">
                   <div className="director-scan h-full w-1/3 bg-gradient-to-r from-transparent via-primary to-accent" />
                 </div>
-                <div className="absolute left-3 top-3 flex items-center gap-2 bg-background/75 px-2 py-1 font-mono text-[9px] uppercase backdrop-blur-sm">
-                  <span className="director-pulse size-1.5 rounded-full bg-primary" /> scanning source
+                <div className="absolute left-3 top-3 flex items-center gap-2 rounded-full border border-foreground/15 bg-background/75 py-1 pl-2.5 pr-3 font-mono text-[9px] uppercase backdrop-blur-sm">
+                  <span className="director-pulse size-1.5 rounded-full bg-gradient-to-r from-primary to-accent" /> scanning source
                 </div>
                 <div className="absolute bottom-3 right-3 font-mono text-[9px] uppercase text-foreground/70">00:42:17 / 00:58:00</div>
                 <Button aria-label="Play footage" size="icon" variant="ghost" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-foreground/30 bg-background/40 backdrop-blur-sm"><Play className="fill-current" /></Button>
