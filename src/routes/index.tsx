@@ -38,11 +38,11 @@ const scores = [
 ];
 
 const workflow = [
-  { n: "01", title: "Find", copy: "Trova i momenti migliori." },
-  { n: "02", title: "Shape", copy: "Costruisci la storia." },
-  { n: "03", title: "Direct", copy: "Dirigi ritmo e stile." },
-  { n: "04", title: "Polish", copy: "Rifinisci il risultato." },
-  { n: "05", title: "Release", copy: "Pronto per il feed." },
+  { n: "01", title: "Find", copy: "Find the best moments." },
+  { n: "02", title: "Shape", copy: "Build the story." },
+  { n: "03", title: "Direct", copy: "Direct pace and style." },
+  { n: "04", title: "Polish", copy: "Polish the result." },
+  { n: "05", title: "Release", copy: "Ready for the feed." },
 ];
 
 const moments = [
@@ -52,13 +52,13 @@ const moments = [
 ];
 
 const modes = [
-  { name: "Auto", copy: "Il Director sceglie l’approccio." },
-  { name: "Viral", copy: "Massima retention." },
-  { name: "Story", copy: "La narrazione prima di tutto." },
-  { name: "Authority", copy: "Pulito e autorevole." },
-  { name: "Energy", copy: "Veloce ed espressivo." },
-  { name: "Cinematic", copy: "Atmosfera e ritmo." },
-  { name: "Raw", copy: "Intervento minimo." },
+  { name: "Auto", copy: "The Director chooses the approach." },
+  { name: "Viral", copy: "Maximum retention." },
+  { name: "Story", copy: "Story first." },
+  { name: "Authority", copy: "Clean and authoritative." },
+  { name: "Energy", copy: "Fast and expressive." },
+  { name: "Cinematic", copy: "Atmosphere and rhythm." },
+  { name: "Raw", copy: "Minimal intervention." },
 ];
 
 const markers = ["Hook", "Context", "Peak", "Payoff", "Loop"];
@@ -116,7 +116,7 @@ function Index() {
               className="director-reveal mt-8 max-w-xs text-sm leading-relaxed text-muted-foreground"
               style={{ "--reveal-delay": "170ms" } as CSSProperties}
             >
-              Carichi un video lungo. Il Director lo guarda, trova i momenti migliori e costruisce gli Short.
+              Upload a long video. The Director watches it, finds the best moments and builds the Shorts.
             </p>
             <div
               className="director-reveal mt-8 flex items-center gap-3"
@@ -261,7 +261,7 @@ function Index() {
                 Director’s note
               </figcaption>
               <blockquote className="mt-3 font-display text-2xl italic leading-snug sm:text-3xl">
-                “Forte apertura. Alta curiosità. Payoff chiaro.”
+                “Strong opening. High curiosity. Clear payoff.”
               </blockquote>
             </figure>
 
@@ -402,7 +402,7 @@ function Index() {
                 Create something<br />worth watching.
               </h2>
               <p className="mt-5 flex items-center gap-3 text-sm text-muted-foreground">
-                <Sparkles className="size-4 text-accent" /> Il Director si mette al lavoro appena carichi il video.
+                <Sparkles className="size-4 text-accent" /> The Director starts working as soon as you upload the video.
               </p>
             </div>
             <Button variant="studio" size="lg">
