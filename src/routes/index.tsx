@@ -66,6 +66,7 @@ const markers = ["Hook", "Context", "Peak", "Payoff", "Loop"];
 function Index() {
   const [isDragging, setIsDragging] = useState(false);
   const [analysisActive, setAnalysisActive] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [sourceName, setSourceName] = useState("DEMO_SOURCE.MOV");
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState("");
@@ -92,7 +93,11 @@ function Index() {
       setSourceUrl(null);
       setSourceName("DEMO_SOURCE.MOV");
     }
-    setAnalysisActive(true);
+    setIsTransitioning(true);
+    window.setTimeout(() => {
+      setAnalysisActive(true);
+      setIsTransitioning(false);
+    }, 420);
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -146,19 +151,19 @@ function Index() {
             <p className="director-reveal font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
               AI video director / studio 01
             </p>
-            <h1 className="mt-6 uppercase leading-[0.82]">
-              <span className="director-reveal block text-5xl font-black sm:text-7xl lg:text-[6.4rem]">I tuoi video,</span>
-              <span
-                className="director-reveal mt-2 block font-display text-[3.7rem] font-normal normal-case italic sm:text-[5.5rem] lg:text-[6.8rem]"
-                style={{ "--reveal-delay": "90ms" } as CSSProperties}
-              >
-                tagliati per i
+            <h1 className="mt-6 uppercase leading-[0.82]" aria-label="I tuoi video, tagliati per i social.">
+              <span className="block text-5xl font-black sm:text-7xl lg:text-[6.4rem]" aria-hidden="true">
+                {["I", "tuoi", "video,"].map((word, index) => (
+                  <span key={word} className="headline-word mr-[0.22em] inline-block last:mr-0" style={{ "--word-delay": `${index * 75}ms` } as CSSProperties}>{word}</span>
+                ))}
               </span>
-              <span
-                className="gradient-word director-reveal mt-1 block text-6xl font-black sm:text-8xl lg:text-[7.6rem]"
-                style={{ "--reveal-delay": "170ms" } as CSSProperties}
-              >
-                social.
+              <span className="mt-2 block font-display text-[3.7rem] font-normal normal-case italic sm:text-[5.5rem] lg:text-[6.8rem]" aria-hidden="true">
+                {["tagliati", "per", "i"].map((word, index) => (
+                  <span key={word} className="headline-word mr-[0.18em] inline-block last:mr-0" style={{ "--word-delay": `${260 + index * 75}ms` } as CSSProperties}>{word}</span>
+                ))}
+              </span>
+              <span className="mt-1 block text-6xl font-black sm:text-8xl lg:text-[7.6rem]" aria-hidden="true">
+                <span className="gradient-word cinematic-shimmer headline-word inline-block" data-text="social." style={{ "--word-delay": "510ms" } as CSSProperties}>social.</span>
               </span>
             </h1>
             <p
@@ -194,7 +199,7 @@ function Index() {
                 }}
                 onDrop={handleDrop}
                 data-dragging={isDragging}
-                className="upload-zone director-reveal group relative flex min-h-[420px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-border bg-card/65 px-6 text-center backdrop-blur-md transition-all duration-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[dragging=true]:border-primary sm:min-h-[500px]"
+                className={`upload-zone director-reveal group relative flex min-h-[420px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-border bg-card/65 px-6 text-center backdrop-blur-md transition-[transform,opacity,border-color] duration-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[dragging=true]:border-primary sm:min-h-[500px] ${isTransitioning ? "upload-exit pointer-events-none" : ""}`}
               >
                 <div className="upload-grid absolute inset-0 opacity-50 transition-opacity duration-500 group-hover:opacity-80" />
                 <div className="absolute inset-x-0 top-0 h-px overflow-hidden">
@@ -249,7 +254,7 @@ function Index() {
                   <Button variant="ghost" size="sm" className="font-mono text-[9px] uppercase tracking-[0.16em]" onClick={() => setAnalysisActive(false)}>New source</Button>
                 </div>
                 <div className="grid items-center gap-5 sm:grid-cols-[1.75fr_auto_0.62fr]">
-                  <figure>
+                  <figure className="analysis-source-enter">
                     <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-card p-[1.5px]">
                       <div className="relative h-full overflow-hidden rounded-[7px] bg-card">
                         {sourceUrl ? (
@@ -265,12 +270,12 @@ function Index() {
                     </div>
                     <figcaption className="mt-3 font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">Original footage</figcaption>
                   </figure>
-                  <div className="hidden flex-col items-center gap-2 sm:flex">
+                  <div className="analysis-connector-enter hidden flex-col items-center gap-2 sm:flex">
                     <span className="h-8 w-px bg-gradient-to-b from-transparent to-primary" />
                     <ArrowRight className="size-4 text-accent" />
                     <span className="h-8 w-px bg-gradient-to-t from-transparent to-accent" />
                   </div>
-                  <figure className="mx-auto w-36 sm:w-full">
+                  <figure className="analysis-short-enter mx-auto w-36 sm:w-full">
                     <div className="relative aspect-[9/16] overflow-hidden rounded-lg border border-primary/45 bg-card">
                       {sourceUrl ? (
                         <video src={sourceUrl} className="h-full w-full object-cover" autoPlay muted loop playsInline />
@@ -284,7 +289,7 @@ function Index() {
                     <figcaption className="mt-3 font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">Vertical short</figcaption>
                   </figure>
                 </div>
-                <ul className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4 font-mono text-[8px] uppercase tracking-[0.16em] text-muted-foreground">
+                <ul className="analysis-pipeline-enter mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4 font-mono text-[8px] uppercase tracking-[0.16em] text-muted-foreground">
                   {pipeline.map((step, index) => <li key={step} className={`flex items-center gap-2 ${index === 2 ? "text-foreground" : ""}`}><span className={`size-1 rounded-full ${index <= 2 ? "bg-primary" : "bg-muted-foreground/40"}`} />{step}</li>)}
                 </ul>
               </div>
