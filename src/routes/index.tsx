@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Aperture, ArrowRight, Film, Menu, Play, Plus, Sparkles, UploadCloud, WandSparkles } from "lucide-react";
+import { Aperture, ArrowRight, Film, Menu, Plus, Sparkles, UploadCloud, WandSparkles } from "lucide-react";
 import { useRef, useState, type ChangeEvent, type CSSProperties, type DragEvent } from "react";
 
 import directorFrame from "@/assets/director-frame.jpg";
