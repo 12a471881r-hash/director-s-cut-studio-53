@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Aperture, ArrowRight, Menu, Play, Plus, Sparkles } from "lucide-react";
-import type { CSSProperties } from "react";
+import { Aperture, ArrowRight, Film, Menu, Play, Plus, Sparkles, UploadCloud, WandSparkles } from "lucide-react";
+import { useRef, useState, type ChangeEvent, type CSSProperties, type DragEvent } from "react";
 
 import directorFrame from "@/assets/director-frame.jpg";
 import { Button } from "@/components/ui/button";
@@ -64,6 +64,49 @@ const modes = [
 const markers = ["Hook", "Context", "Peak", "Payoff", "Loop"];
 
 function Index() {
+  const [isDragging, setIsDragging] = useState(false);
+  const [analysisActive, setAnalysisActive] = useState(false);
+  const [sourceName, setSourceName] = useState("DEMO_SOURCE.MOV");
+  const [sourceUrl, setSourceUrl] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const startAnalysis = (file?: File) => {
+    if (file && file.size > 2 * 1024 * 1024 * 1024) {
+      setUploadError("File too large. Maximum size is 2GB.");
+      return;
+    }
+
+    if (file && !file.type.startsWith("video/")) {
+      setUploadError("Choose an MP4 or MOV video file.");
+      return;
+    }
+
+    setUploadError("");
+    if (file) {
+      if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+      setSourceUrl(URL.createObjectURL(file));
+      setSourceName(file.name);
+    } else {
+      if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+      setSourceUrl(null);
+      setSourceName("DEMO_SOURCE.MOV");
+    }
+    setAnalysisActive(true);
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) startAnalysis(file);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+    const file = event.dataTransfer.files?.[0];
+    if (file) startAnalysis(file);
+  };
+
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/85 px-4 backdrop-blur-md sm:px-7">
@@ -96,122 +139,156 @@ function Index() {
         </div>
       </header>
 
-      {/* HERO — source video becomes a vertical short */}
-      <section id="studio" className="mx-auto max-w-[1600px] px-4 pb-16 pt-10 sm:px-7 lg:px-10 lg:pt-16">
-        <div className="grid items-end gap-10 lg:grid-cols-[0.62fr_1.9fr]">
-          <div className="relative z-10 lg:pb-12">
+      {/* HERO — upload utility transitions into the live director */}
+      <section id="studio" className="mx-auto min-h-[calc(100svh-4rem)] max-w-[1600px] px-4 pb-14 pt-10 sm:px-7 lg:px-10 lg:pt-14">
+        <div className="grid items-center gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
+          <div className="relative z-10">
             <p className="director-reveal font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
-              Live analysis / source 01
+              AI video director / studio 01
             </p>
-            <h1
-              className="director-reveal mt-6 text-6xl font-black uppercase leading-[0.8] tracking-[-0.02em] sm:text-8xl lg:text-[7.5rem]"
-              style={{ "--reveal-delay": "90ms" } as CSSProperties}
-            >
-              Find<br />
-              <span className="font-display text-[0.78em] font-normal normal-case italic tracking-tight">the</span>
-              <br />
-              <span className="gradient-word">moment.</span>
+            <h1 className="mt-6 uppercase leading-[0.82]">
+              <span className="director-reveal block text-5xl font-black sm:text-7xl lg:text-[6.4rem]">I tuoi video,</span>
+              <span
+                className="director-reveal mt-2 block font-display text-[3.7rem] font-normal normal-case italic sm:text-[5.5rem] lg:text-[6.8rem]"
+                style={{ "--reveal-delay": "90ms" } as CSSProperties}
+              >
+                tagliati per i
+              </span>
+              <span
+                className="gradient-word director-reveal mt-1 block text-6xl font-black sm:text-8xl lg:text-[7.6rem]"
+                style={{ "--reveal-delay": "170ms" } as CSSProperties}
+              >
+                social.
+              </span>
             </h1>
             <p
-              className="director-reveal mt-8 max-w-xs text-sm leading-relaxed text-muted-foreground"
-              style={{ "--reveal-delay": "170ms" } as CSSProperties}
+              className="director-reveal mt-8 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base"
+              style={{ "--reveal-delay": "240ms" } as CSSProperties}
             >
-              Upload a long video. The Director watches it, finds the best moments and builds the Shorts.
+              Carica un video lungo. Vantage trova i momenti migliori e li trasforma in clip verticali pronte da pubblicare.
             </p>
-            <div
-              className="director-reveal mt-8 flex items-center gap-3"
-              style={{ "--reveal-delay": "230ms" } as CSSProperties}
-            >
+            <div className="mt-8 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
               <span className="h-px w-14 bg-gradient-to-r from-primary to-accent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                The director is watching
-              </span>
+              {analysisActive ? "The director is watching" : "Ready for source"}
             </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-10 -z-10 bg-[radial-gradient(circle_at_62%_40%,var(--studio-light),transparent_60%)]" />
-            <div className="grid items-center gap-6 lg:grid-cols-[1.75fr_auto_0.62fr]">
-              {/* Source */}
-              <figure className="relative">
-                <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-card p-[1.5px]">
-                  <div className="relative h-full overflow-hidden rounded-[7px] bg-card">
-                    <img
-                      src={directorFrame}
-                      alt="Director reviewing long-form footage in a dark editing studio"
-                      width={1536}
-                      height={864}
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-x-0 top-0 h-px overflow-hidden">
-                      <div className="director-scan h-full w-1/3 bg-gradient-to-r from-transparent via-primary to-accent" />
-                    </div>
-                    <div className="absolute left-3 top-3 flex items-center gap-2 rounded-full border border-foreground/15 bg-background/75 py-1 pl-2.5 pr-3 font-mono text-[9px] uppercase tracking-[0.16em] backdrop-blur-sm">
-                      <span className="director-pulse size-1.5 rounded-full bg-gradient-to-r from-primary to-accent" />
-                      source / 58:00
-                    </div>
-                    <div className="absolute bottom-3 right-3 font-mono text-[9px] uppercase text-foreground/70">
-                      00:42:17 / 00:58:00
-                    </div>
-                    <Button
-                      aria-label="Play footage"
-                      size="icon"
-                      variant="ghost"
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/30 bg-background/40 backdrop-blur-sm"
-                    >
-                      <Play className="fill-current" />
-                    </Button>
-                  </div>
-                  <div className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-br from-primary via-primary/30 to-accent opacity-40" />
+          <div className="relative min-h-[420px] sm:min-h-[500px]">
+            <div className="absolute -inset-8 -z-10 bg-[radial-gradient(circle_at_50%_45%,var(--studio-light),transparent_62%)]" />
+            {!analysisActive ? (
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Upload a video by dragging it here or selecting a file"
+                onClick={() => fileInputRef.current?.click()}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") fileInputRef.current?.click();
+                }}
+                onDragEnter={(event) => {
+                  event.preventDefault();
+                  setIsDragging(true);
+                }}
+                onDragOver={(event) => event.preventDefault()}
+                onDragLeave={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsDragging(false);
+                }}
+                onDrop={handleDrop}
+                data-dragging={isDragging}
+                className="upload-zone director-reveal group relative flex min-h-[420px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-border bg-card/65 px-6 text-center backdrop-blur-md transition-all duration-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[dragging=true]:border-primary sm:min-h-[500px]"
+              >
+                <div className="upload-grid absolute inset-0 opacity-50 transition-opacity duration-500 group-hover:opacity-80" />
+                <div className="absolute inset-x-0 top-0 h-px overflow-hidden">
+                  <div className="director-scan h-full w-1/3 bg-gradient-to-r from-transparent via-primary to-accent" />
                 </div>
-                <figcaption className="mt-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Original video
-                </figcaption>
-              </figure>
-
-              <div className="hidden flex-col items-center gap-2 lg:flex">
-                <span className="h-10 w-px bg-gradient-to-b from-transparent to-primary" />
-                <ArrowRight aria-hidden="true" className="size-4 text-accent" />
-                <span className="h-10 w-px bg-gradient-to-t from-transparent to-accent" />
+                <div className="relative flex size-20 items-center justify-center rounded-full border border-primary/35 bg-background/60 shadow-[0_0_40px_var(--studio-light)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-105">
+                  <UploadCloud className="size-8 text-primary transition-colors group-hover:text-accent" />
+                  <span className="director-pulse absolute inset-2 -z-10 rounded-full bg-primary/15" />
+                </div>
+                <p className="relative mt-7 text-2xl font-black uppercase">Drop your footage</p>
+                <p className="relative mt-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
+                  Drag & drop / MP4, MOV • max 2GB
+                </p>
+                <div className="relative mt-8 flex flex-wrap justify-center gap-3">
+                  <Button
+                    variant="studio"
+                    size="lg"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      fileInputRef.current?.click();
+                    }}
+                  >
+                    <Film /> Carica video
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="font-mono text-[10px] uppercase tracking-[0.16em]"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      startAnalysis();
+                    }}
+                  >
+                    <WandSparkles /> Carica demo
+                  </Button>
+                </div>
+                {uploadError && <p className="relative mt-5 text-xs text-primary">{uploadError}</p>}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="video/mp4,video/quicktime,video/*"
+                  className="sr-only"
+                  onChange={handleFileChange}
+                />
+                <span className="absolute left-4 top-4 font-mono text-[8px] uppercase tracking-[0.18em] text-muted-foreground">Input / waiting</span>
+                <span className="absolute bottom-4 right-4 font-mono text-[8px] uppercase tracking-[0.18em] text-muted-foreground">Secure local preview</span>
               </div>
-
-              {/* Short */}
-              <figure className="relative mx-auto w-40 sm:w-48 lg:w-full">
-                <div className="relative aspect-[9/16] overflow-hidden rounded-lg border border-primary/40 bg-card">
-                  <img
-                    src={directorFrame}
-                    alt="Vertical short cut generated from the original footage"
-                    className="h-full w-full scale-[1.6] object-cover object-[62%_38%]"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background to-transparent" />
-                  <div className="absolute left-2 top-2 rounded-full border border-foreground/15 bg-background/75 px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.16em]">
-                    final cut
-                  </div>
-                  <div className="absolute bottom-3 left-2 right-2 font-mono text-[8px] uppercase leading-relaxed text-foreground/80">
-                    <span className="gradient-word font-sans text-[13px] font-black tracking-tight">94</span> attention
-                  </div>
+            ) : (
+              <div className="analysis-enter pt-3">
+                <div className="mb-5 flex items-center justify-between border-b border-border pb-4 font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
+                  <span className="flex min-w-0 items-center gap-2"><span className="director-pulse size-1.5 shrink-0 rounded-full bg-primary" /><span className="truncate">Live / {sourceName}</span></span>
+                  <Button variant="ghost" size="sm" className="font-mono text-[9px] uppercase tracking-[0.16em]" onClick={() => setAnalysisActive(false)}>New source</Button>
                 </div>
-                <figcaption className="mt-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Vertical short
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* System pipeline indicators */}
-            <ul className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-border pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
-              {pipeline.map((step, index) => (
-                <li
-                  key={step}
-                  className={`director-reveal flex items-center gap-2 ${index === 2 ? "text-foreground" : ""}`}
-                  style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
-                >
-                  <span
-                    className={`size-1 rounded-full ${index <= 2 ? "bg-gradient-to-r from-primary to-accent" : "bg-muted-foreground/40"}`}
-                  />
-                  {step}
-                </li>
-              ))}
-            </ul>
+                <div className="grid items-center gap-5 sm:grid-cols-[1.75fr_auto_0.62fr]">
+                  <figure>
+                    <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-card p-[1.5px]">
+                      <div className="relative h-full overflow-hidden rounded-[7px] bg-card">
+                        {sourceUrl ? (
+                          <video src={sourceUrl} className="h-full w-full object-cover" autoPlay muted loop playsInline />
+                        ) : (
+                          <img src={directorFrame} alt="Director reviewing long-form footage" className="h-full w-full object-cover" />
+                        )}
+                        <div className="director-vertical-scan absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-accent" />
+                        <div className="absolute left-3 top-3 rounded-full border border-foreground/15 bg-background/75 px-3 py-1 font-mono text-[8px] uppercase tracking-[0.16em] backdrop-blur-sm">Source / analyzing</div>
+                        <div className="absolute bottom-3 right-3 font-mono text-[8px] uppercase text-foreground/70">00:42:17 / 00:58:00</div>
+                      </div>
+                      <div className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-br from-primary via-primary/30 to-accent opacity-40" />
+                    </div>
+                    <figcaption className="mt-3 font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">Original footage</figcaption>
+                  </figure>
+                  <div className="hidden flex-col items-center gap-2 sm:flex">
+                    <span className="h-8 w-px bg-gradient-to-b from-transparent to-primary" />
+                    <ArrowRight className="size-4 text-accent" />
+                    <span className="h-8 w-px bg-gradient-to-t from-transparent to-accent" />
+                  </div>
+                  <figure className="mx-auto w-36 sm:w-full">
+                    <div className="relative aspect-[9/16] overflow-hidden rounded-lg border border-primary/45 bg-card">
+                      {sourceUrl ? (
+                        <video src={sourceUrl} className="h-full w-full object-cover" autoPlay muted loop playsInline />
+                      ) : (
+                        <img src={directorFrame} alt="Vertical short preview" className="h-full w-full scale-[1.6] object-cover object-[62%_38%]" />
+                      )}
+                      <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background to-transparent" />
+                      <div className="absolute left-2 top-2 rounded-full border border-foreground/15 bg-background/75 px-2 py-0.5 font-mono text-[7px] uppercase">Final cut</div>
+                      <div className="absolute bottom-3 left-2 font-mono text-[7px] uppercase text-foreground/80"><span className="gradient-word font-sans text-xl font-black">94</span> Attention</div>
+                    </div>
+                    <figcaption className="mt-3 font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">Vertical short</figcaption>
+                  </figure>
+                </div>
+                <ul className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4 font-mono text-[8px] uppercase tracking-[0.16em] text-muted-foreground">
+                  {pipeline.map((step, index) => <li key={step} className={`flex items-center gap-2 ${index === 2 ? "text-foreground" : ""}`}><span className={`size-1 rounded-full ${index <= 2 ? "bg-primary" : "bg-muted-foreground/40"}`} />{step}</li>)}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </section>
