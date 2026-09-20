@@ -179,10 +179,63 @@
   50% { background-position: 100% 50%; }
 }
 
+@keyframes director-vertical-scan {
+  0% { transform: translateY(-1px); opacity: 0; }
+  15%, 85% { opacity: 0.85; }
+  100% { transform: translateY(340px); opacity: 0; }
+}
+
+@keyframes analysis-enter {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
 /* Staggered entrance; delay set inline via --reveal-delay */
 @utility director-reveal {
   animation: director-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--reveal-delay, 0ms);
+}
+
+@utility director-vertical-scan {
+  animation: director-vertical-scan 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  box-shadow: 0 0 22px var(--primary);
+}
+
+@utility analysis-enter {
+  animation: analysis-enter 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility upload-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+}
+
+@utility upload-zone {
+  box-shadow: inset 0 0 55px color-mix(in oklab, var(--background) 65%, transparent);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 20%, var(--primary), var(--accent), transparent 80%) border-box;
+    border: 1px solid transparent;
+    mask: linear-gradient(black 0 0) padding-box, linear-gradient(black 0 0);
+    mask-composite: exclude;
+    opacity: 0.18;
+    transition: opacity 0.4s ease;
+  }
+  &:hover::after,
+  &[data-dragging="true"]::after {
+    opacity: 0.9;
+  }
+  &[data-dragging="true"] {
+    transform: scale(1.01);
+    box-shadow: 0 0 55px var(--studio-light), inset 0 0 55px color-mix(in oklab, var(--primary) 8%, transparent);
+  }
 }
 
 /* Slow-moving pink -> orange gradient text */
@@ -218,6 +271,8 @@
   .director-scan,
   .director-pulse,
   .director-reveal,
+  .director-vertical-scan,
+  .analysis-enter,
   .gradient-word {
     animation: none;
   }
